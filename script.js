@@ -1,6 +1,6 @@
 const board = document.getElementById("board")
 
-// create 15x15 board
+// create board
 for(let i=0;i<225;i++){
 
 let cell = document.createElement("div")
@@ -10,7 +10,11 @@ board.appendChild(cell)
 
 }
 
-// dice roll
+// dice button
+const diceBtn = document.getElementById("diceBtn")
+
+diceBtn.addEventListener("click", rollDice)
+
 function rollDice(){
 
 let dice = Math.floor(Math.random()*6)+1
