@@ -1,0 +1,23 @@
+body{
+    font-family: Arial;
+    text-align: center;
+}
+
+#board{
+    width: 600px;
+    height: 600px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(15, 1fr);
+    grid-template-rows: repeat(15, 1fr);
+    border: 3px solid black;
+}
+
+.cell{
+    border: 1px solid #ccc;
+}
+
+.red{ background: red;}
+.blue{ background: blue;}
+.green{ background: green;}
+.yellow{ background: yellow;}
