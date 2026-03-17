@@ -1,74 +1,111 @@
-// LUDO GAME SCRIPT
+// ===== CREATE BOARD =====
 
-// get board element
-const board = document.getElementById("board");
+const board = document.getElementById("board")
+const cells = []
 
-// create board grid
-for (let row = 0; row < 15; row++) {
-  for (let col = 0; col < 15; col++) {
+// build 15x15 board
+for (let i = 0; i < 225; i++) {
 
-    const cell = document.createElement("div");
-    cell.classList.add("cell");
+    const cell = document.createElement("div")
+    cell.classList.add("cell")
 
-    // color home areas
-    if (row < 6 && col < 6) {
-      cell.classList.add("red");
-    }
+    board.appendChild(cell)
 
-    if (row < 6 && col > 8) {
-      cell.classList.add("blue");
-    }
-
-    if (row > 8 && col < 6) {
-      cell.classList.add("green");
-    }
-
-    if (row > 8 && col > 8) {
-      cell.classList.add("yellow");
-    }
-
-    board.appendChild(cell);
-  }
+    cells.push(cell)
 }
 
 
-// dice elements
-const diceBtn = document.getElementById("diceBtn");
-const diceResult = document.getElementById("diceResult");
+// ===== CREATE PATH AROUND BOARD =====
 
-// dice faces
-const diceFaces = ["⚀","⚁","⚂","⚃","⚄","⚅"];
+const path = []
+
+// top row
+for (let i = 0; i < 15; i++) path.push(i)
+
+// right column
+for (let i = 29; i <= 209; i += 15) path.push(i)
+
+// bottom row
+for (let i = 224; i >= 210; i--) path.push(i)
+
+// left column
+for (let i = 195; i >= 15; i -= 15) path.push(i)
 
 
-// roll dice
+
+// ===== CREATE PLAYER TOKEN =====
+
+let playerPosition = 0
+
+const player = document.createElement("div")
+
+player.style.width = "20px"
+player.style.height = "20px"
+player.style.background = "black"
+player.style.borderRadius = "50%"
+player.style.margin = "auto"
+
+cells[path[playerPosition]].appendChild(player)
+
+
+
+// ===== DICE SYSTEM =====
+
+const diceBtn = document.getElementById("diceBtn")
+const diceResult = document.getElementById("diceResult")
+
+const diceFaces = ["⚀","⚁","⚂","⚃","⚄","⚅"]
+
+
+
+// ===== ROLL DICE FUNCTION =====
+
 function rollDice(){
 
-  diceResult.innerHTML = "Rolling...";
+    let rolls = 10
 
-  // dice animation
-  let rolls = 10;
-  let animation = setInterval(() => {
+    let animation = setInterval(() => {
 
-    let randomFace = Math.floor(Math.random()*6);
-    diceResult.innerHTML = "Dice: " + diceFaces[randomFace];
+        let temp = Math.floor(Math.random()*6)
+        diceResult.innerHTML = "Dice: " + diceFaces[temp]
 
-    rolls--;
+        rolls--
 
-    if(rolls === 0){
+        if(rolls === 0){
 
-      clearInterval(animation);
+            clearInterval(animation)
 
-      let finalRoll = Math.floor(Math.random()*6);
+            let dice = Math.floor(Math.random()*6)+1
 
-      diceResult.innerHTML =
-      "Dice: " + diceFaces[finalRoll] +
-      " (" + (finalRoll+1) + ")";
+            diceResult.innerHTML =
+            "Dice: " + diceFaces[dice-1] + " (" + dice + ")"
 
-    }
+            movePlayer(dice)
 
-  },100);
+        }
+
+    },100)
+
 }
 
 
-// button click
-diceBtn.addEventListener("click", rollDice);
+
+// ===== MOVE PLAYER =====
+
+function movePlayer(steps){
+
+    playerPosition += steps
+
+    if(playerPosition >= path.length){
+        playerPosition = path.length - 1
+    }
+
+    cells[path[playerPosition]].appendChild(player)
+
+}
+
+
+
+// ===== BUTTON EVENT =====
+
+diceBtn.addEventListener("click", rollDice)
